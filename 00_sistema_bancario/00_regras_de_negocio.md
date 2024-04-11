@@ -1,4 +1,5 @@
-Praticando funcoes
+Primeira versao sistema bancario 
+script referencia: 00_sistema_bancario.py
 
 Criar um sistema bancario simples para operacoes de depositos, saques e extrato
 
