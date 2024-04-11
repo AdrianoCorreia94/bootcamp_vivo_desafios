@@ -5,7 +5,9 @@ saques_diario, extrato, saldo_atual = 0, [], 0
 
 
 def menu():
+
     print(f"\nEscolhe uma opcao")
+
     print(f'{" -"*9}\
           \n| 1 - Deposito\t |\
           \n| 2 - Saque\t |\
@@ -19,8 +21,10 @@ def depositar():
     # solicita o valor do deposito
     try:
         valor = float(input('Valor do deposito\n>>'))
+
     except:
         print('Digite um valor numerico')
+
     else:
         if valor < 0:  # se o valor for negativo
             print('Digite um valor inteiro positivo para deposito')  # exibir msg
@@ -36,22 +40,25 @@ def sacar():
     global saques_diario
     if saques_diario < 3:  # quantidade diaria maxima 3 saques
         try:
-            valor = float(input('Valor do deposito\n>>'))
+            valor = float(input('Valor do saque\n>>'))
         except:
             print('Digite um valor numerico')
         else:
-            if valor <= 500:  # valor maximo para saque 500
-                global saldo_atual
-                if saldo_atual >= valor:  # so permitir saque o valor solicitado for maior ou igual o saldo
-                    # realizar o saque e subtrair o saldo
-                    saldo_atual = float(saldo_atual - valor)
-                    saques_diario += 1  # adicionar saque diario
-                    # adicionar ao extrato
-                    extrato.append(f'Saque R$ {valor:.2f}')
-                else:  # se o valor do saque for menor do que o saldo, nao permitir saque
-                    print("saldo indisponivel")
-            else:  # se o valor solicitado para saque for maior que o limite de 500
-                print('O valor máximo para saque é R$ 500,00')  # exibir msg
+            if valor < 0: # nao permitir saques de valores negativos
+                print('Valor inválido para saque')
+            else:
+                if valor <= 500:  # valor maximo para saque 500
+                    global saldo_atual
+                    if saldo_atual >= valor:  # so permitir saque o valor solicitado for maior ou igual o saldo
+                        # realizar o saque e subtrair o saldo
+                        saldo_atual = float(saldo_atual - valor)
+                        saques_diario += 1  # adicionar saque diario
+                        # adicionar ao extrato
+                        extrato.append(f'Saque R$ {valor:.2f}')
+                    else:  # se o valor do saque for menor do que o saldo, nao permitir saque
+                        print("saldo indisponivel")
+                else:  # se o valor solicitado para saque for maior que o limite de 500
+                    print('O valor máximo para saque é R$ 500,00')  # exibir msg
     else:  # se atingir o limite maximo diário
         print('Voce atingiu o limite maximo de saques por dia')
 
