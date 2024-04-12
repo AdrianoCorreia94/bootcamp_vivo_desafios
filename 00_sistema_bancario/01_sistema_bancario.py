@@ -1,9 +1,9 @@
-#%%
+
 
 clientes = {}   # base de clientes
 cadastros = 1   # contador automa
 contagem_contas = 1  # contagem de clientes cadastrados
-contas_cadastradas = {}  #  base de dados contas 
+contas_cadastradas = {}  # base de dados contas 
 saldo_atual = float(0)  # saldo atual da conta
 extrato = []  # extrato
 saques_diario = 0  # contagem de saque diario
@@ -16,7 +16,9 @@ def menu():  # funcao para apresentar menu, sem funcionalidades
           \n| 1 - Deposito\t |\
           \n| 2 - Saque\t |\
           \n| 3 - Extrato\t |\
-          \n| 4 - Sair \t |\
+          \n| 4 - Cadastrar Novo Cliente \t |\
+          \n| 5 - Abrir Nova Conta \t |\
+          \n| 6 - Sair \t |\
           \n{" -"*9}')
 
 
@@ -45,7 +47,7 @@ def cadastrar_endereco(): # funcao cadastrar endereco do cliente
     cidade = str(input('Insira a cidade do cliente\n>  '))
     estado = str(input('Insira sigal do estado do cliente\n> '))
     endereco = (f'{logradouro},{num}- {bairro}- {cidade}/{estado}')
-    return endereco # retornar endereco como string com logradour numero, bairro - cidade/siglaEstado
+    return endereco  # retornar endereco como string com logradour numero, bairro - cidade/siglaEstado
 
 
 def consultar_cpf(cpf: str):  # funcao para consultar se o CPF já esta cadastrado
@@ -57,12 +59,16 @@ def criar_conta():  # funcao para criar uma nova conta
     global contagem_contas  # contagem de contas, para num. automatico da conta
     agencia = '0001'  # numero da agencia pre definida
     cliente = str(input('CPF do cliente ')) # CPF do cliente dono da conta
-    contas_cadastradas[contagem_contas] = {
-                                            'numero_conta': contagem_contas, 
-                                            'agencia': agencia, 
-                                            'cliente': cliente
-                                            }   # adicionar a conta no dict de contas com chave automatica
-    contagem_contas += 1 # incrementar no numero automatico de conta
+    if consultar_cpf(cliente):
+        contas_cadastradas[contagem_contas] = {
+                                                'numero_conta': contagem_contas, 
+                                                'agencia': agencia, 
+                                                'cpf_cliente': cliente,
+                                                'nome_cliente': clientes[cliente]['nome']
+                                                }   # adicionar a conta no dict de contas com chave automatica
+        contagem_contas += 1  # incrementar no numero automatico de conta
+    else:
+        print('CPF nao cadastrado no sistema')
 
 
 def depositar(valor: float, saldo: float, extrato: list):  # funcao realizar deposito
@@ -75,9 +81,9 @@ def sacar(*, valor: float, saldo: float, extrato: list):  # funcao sacar
     global saques_diario   # contagem de saques diarios realizados
     if valor > 500:  # valor maior que o maximo permitido
         print('Valor maximo do permitido para saque')
-    elif valor < 0: # valor negativo, nao permitido
+    elif valor < 0:  # valor negativo, nao permitido
         print('Valor invalido')
-    else: # valores positivos abaixo do limite maximo
+    else:  # valores positivos abaixo do limite maximo
         novo_saldo = saldo - valor  # novo saldo recebe saldo atual - valor do saque 
         extrato.append(f'Saque R$ {valor}')  # adicionar a operacao ao extraro
         saques_diario += 1  # saques diarios incremente 1 
@@ -146,7 +152,13 @@ while True:
         elif op == 3:  # opcao 3 consultar o extrato
             consultar_extrato()  # chamar funcao extrato
         
-        elif op == 4:  # opcao encerrar
+        elif op == 4:
+            cadastrar_cliente()
+
+        elif op == 5:
+            criar_conta()
+
+        elif op == 6:  # opcao encerrar
             print('Saindo ...')  # imprimir que esta saindo
             break  # sair do loop
         
