@@ -1,5 +1,3 @@
-
-
 clientes = {}   # base de clientes
 cadastros = 1   # contador automa
 contagem_contas = 1  # contagem de clientes cadastrados
@@ -10,7 +8,7 @@ saques_diario = 0  # contagem de saque diario
 
 
 def menu():  # funcao para apresentar menu, sem funcionalidades
-    print(f"\nEscolhe uma opcao")
+    print("\nEscolhe uma opcao")
 
     print(f'{" -"*9}\
           \n| 1 - Deposito\t |\
@@ -33,7 +31,7 @@ def cadastrar_cliente():  # funcao para criar um novo cliente
         cadastro = {'nome': nome,
                     'nascimento': data_nascimento,
                     'cpf': cpf,
-                    'endereco': endereco}  #dicionario local com o cadastro
+                    'endereco': endereco}  # dicionario local com o cadastro
         clientes[cpf] = cadastro  # inserir o dicionario local na base global de clientes, usando como chave o CPF
         cadastros += 1
     else:  # se CPF ja estiver cadastrado
@@ -52,26 +50,26 @@ def cadastrar_endereco(): # funcao cadastrar endereco do cliente
 
 def consultar_cpf(cpf: str):  # funcao para consultar se o CPF já esta cadastrado
     cpf = cpf
-    return cpf in clientes.keys() # retornar F or T para CPF encontrado
+    return cpf in clientes.keys()  # retornar F or T para CPF encontrado
 
 
 def criar_conta():  # funcao para criar uma nova conta
     global contagem_contas  # contagem de contas, para num. automatico da conta
     agencia = '0001'  # numero da agencia pre definida
     cliente = str(input('CPF do cliente ')) # CPF do cliente dono da conta
-    if consultar_cpf(cliente):
+    if consultar_cpf(cliente):  # confirmar que o CPF está cadastrado
         contas_cadastradas[contagem_contas] = {
-                                                'numero_conta': contagem_contas, 
-                                                'agencia': agencia, 
-                                                'cpf_cliente': cliente,
-                                                'nome_cliente': clientes[cliente]['nome']
+                                                'numero_conta': contagem_contas,  # contagem automatica
+                                                'agencia': agencia,  # fixa 0001
+                                                'cpf_cliente': cliente,  # cpf informado na entrada
+                                                'nome_cliente': clientes[cliente]['nome']  # nome buscado na base de cliente de acordo com o CPF
                                                 }   # adicionar a conta no dict de contas com chave automatica
         contagem_contas += 1  # incrementar no numero automatico de conta
-    else:
-        print('CPF nao cadastrado no sistema')
+    else:  # se o CPF nao estiver cadastrado
+        print('CPF nao cadastrado no sistema')  # imprimir mensagem 
 
 
-def depositar(valor: float, saldo: float, extrato: list):  # funcao realizar deposito
+def depositar(valor: float, saldo: float, extrato: list, /):  # funcao realizar deposito
     novo_saldo = saldo + valor  # novo saldo recebe saldo atual + valor do deposito
     extrato.append(f'Deposito R$ {valor:.2f}') # extrato adiciona a operacao à list de extrato
     return novo_saldo  # retornar o novo saldo apos operacao
@@ -126,7 +124,6 @@ while True:
                     saldo_atual = depositar(valor_deposito, saldo_atual, extrato)  # chamar a funcao depositar
 
         elif op == 2:  # opcao 2, realizar saque
- 
             if saques_diario >= 3:  # se o cliente atingiu a quantidade maxima diaria de saques
                 print('\n\tLimite de saques diarios atingidos')  # exibir mensagem 
  
@@ -162,7 +159,6 @@ while True:
             print('Saindo ...')  # imprimir que esta saindo
             break  # sair do loop
         
-        else:
-            # qualquer outro numero, exibir mensagem da op invalida
+        else:  # qualquer outro numero, exibir mensagem da op invalida
             print('\n\tOpcao inválida, tente novamente')
             menu()  # chamar menu novamente
