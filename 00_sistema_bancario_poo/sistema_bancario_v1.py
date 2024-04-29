@@ -77,36 +77,9 @@ base_clientes = {}
 
 def menu_opcoes():
     print('Selecione a opcao desejada\
-            1 - Cadastrar Cliente\
-            2 - Criar nova conta\
-            3 - Ver base de dados clientes\
-            4 - Ver base de dados contas')
-
-
-def criando_conta():
-    cpf = input('Digite o CPF\n>')
-    nome = input('Digite o nome do cliente\n>')
-    data_nascimento = input(
-        'Digite o data de nascimento do cliente (ano, mes, dia)\n>')
-    endereco = input('Digite o endereco do cliente\n>')
-    limite = input('Digite o limite da conta\n>')
-
-    # TODO: instanciar pessoa para passar como parametro para criar conta
-    cliente = PessoaFisica(cpf=cpf,
-                           nome=nome,
-                           data_nascimento=datetime.strptime(
-                               data_nascimento, '%Y%m%d'),
-                           endereco=endereco)
-
-    base_clientes[cliente.cpf] = cliente.cadastrar_cliente()
-
-    conta = ContaCorrente(numero=1,
-                          cliente=cliente.__str__(),
-                          historico='historico',
-                          limite=limite,
-                          limite_saques=3)
-
-    base_contas[len(base_contas)] = conta.nova_conta()
+            \n1 - Criar nova conta\
+            \n2 - Ver base de dados clientes\
+            \n3  Ver base de dados contas')
 
 
 # testando funcionalidades
@@ -115,32 +88,33 @@ while True:
     op = input()
     if op == '1':
         cpf = input('Digite o CPF\n>')
-        if cpf not in base_clientes.keys():
-            nome = input('Digite o nome do cliente\n>')
-            data_nascimento = input(
-                'Digite o data de nascimento do cliente (ano, mes, dia)\n>')
-            endereco = input('Digite o endereco do cliente\n>')
+        nome = input('Digite o nome do cliente\n>')
+        data_nascimento = input(
+            'Digite o data de nascimento do cliente (ano, mes, dia)\n>')
+        endereco = input('Digite o endereco do cliente\n>')
+        limite = input('Digite o limite da conta\n>')
 
-            cliente = PessoaFisica(cpf=cpf,
-                                   nome=nome,
-                                   data_nascimento=datetime.strptime(
-                                       data_nascimento, '%Y%m%d'),
-                                   endereco=endereco)
+        cliente = PessoaFisica(cpf=cpf,
+                               nome=nome,
+                               data_nascimento=datetime.strptime(
+                                   data_nascimento, '%Y%m%d'),
+                               endereco=endereco)
 
-            atualizar = cliente.cadastrar_cliente()
-            base_clientes[cliente.cpf] = atualizar
+        base_clientes[cliente.cpf] = cliente.cadastrar_cliente()
 
-        else:
-            print('cliente já cadastrado no sistema')
-            break
+        conta = ContaCorrente(numero=len(base_contas)+1,
+                              cliente=cliente.__str__(),
+                              historico='historico',
+                              limite=limite,
+                              limite_saques=3)
+
+        base_contas[len(base_contas)] = conta.nova_conta()
+
     elif op == '2':
-        criando_conta()
-
-    elif op == '3':
         for k, v in base_clientes.items():
             print(k, v)
 
-    elif op == '4':
+    elif op == '3':
         for k, v in base_contas.items():
             print(k, v)
 
