@@ -81,12 +81,14 @@ while True:
         cpf = input('Digite o CPF\n>')
         if cpf not in base_clientes.keys():
             nome = input('Digite o nome do cliente\n>')
-            data_nascimento = input('Digite o data de nascimento do cliente (ano, mes, dia)\n>')
+            data_nascimento = input(
+                'Digite o data de nascimento do cliente (ano, mes, dia)\n>')
             endereco = input('Digite o endereco do cliente\n>')
 
             cliente = PessoaFisica(cpf=cpf,
                                    nome=nome,
-                                   data_nascimento=datetime.strptime(data_nascimento, '%Y%m%d'),
+                                   data_nascimento=datetime.strptime(
+                                       data_nascimento, '%Y%m%d'),
                                    endereco=endereco)
 
             atualizar = cliente.cadastrar_cliente()
@@ -97,7 +99,8 @@ while True:
             break
 
     elif op == '3':
-        print(base_clientes)
+        for k, v in base_clientes.items():
+            print(k, v)
 
     else:
         break
