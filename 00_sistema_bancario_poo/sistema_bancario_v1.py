@@ -34,6 +34,12 @@ class ContaCorrente(Conta):
         self.limite = limite
         self.limite_saques = limite_saques
 
+    def __str__(self) -> str:
+        return f'Conta: {self.numero}, Agencia {self.agencia}'
+
+    def info(self) -> str:
+        return f'Ag: {self.agencia} Conta: {self.numero}'
+
 
 class Cliente():
     contas = []
@@ -47,7 +53,7 @@ class Cliente():
 
     # TODO: adicionar conta
     def adicionar_conta(self, conta: object):
-        self.conta = conta
+        self.contas.append(conta)
 
 
 class PessoaFisica(Cliente):
@@ -56,13 +62,7 @@ class PessoaFisica(Cliente):
         self.cpf = cpf
         self.nome = nome
         self.data_nascimento = data_nascimento
-
-    def cadastrar_cliente(self):
-        return {'nome': self.nome,
-                'cpf': self.cpf,
-                'data_nascimento': f'{datetime.date(self.data_nascimento)}',
-                'endereco': self.endereco,
-                'contas': self.contas}
+        self.contas = []
 
     def __str__(self) -> str:
         return f'Nome: {self.nome}, CPF: {self.cpf}, Nascimento: {
@@ -70,7 +70,6 @@ class PessoaFisica(Cliente):
 
 
 # ----------------------------------------------------------------------------------------------------
-
 base_contas = {}
 base_clientes = {}
 
@@ -100,16 +99,20 @@ while True:
                                    data_nascimento, '%Y%m%d'),
                                endereco=endereco)
 
-        base_clientes[cliente.cpf] = cliente.cadastrar_cliente()
-
         conta = ContaCorrente(numero=len(base_contas)+1,
                               cliente=cliente.__str__(),
                               historico='historico',
                               limite=limite,
                               limite_saques=3)
 
-        base_contas[len(base_contas)] = conta.nova_conta()
+        if cpf not in base_clientes.keys():
+            base_clientes[cpf] = cliente  # adicionar a base de clientes
+            base_contas[len(base_contas)+1] = conta
+            cliente.adicionar_conta(conta)
 
+        else:
+            # base_contas[len(base_contas)] = conta.nova_conta()
+            pass
     elif op == '2':
         for k, v in base_clientes.items():
             print(k, v)
@@ -120,3 +123,71 @@ while True:
 
     else:
         break
+
+for chave, valor in base_contas.items():
+    print(valor.saldo, valor.limite)
+
+# print(cliente.contas)
+
+
+'''
+cliente_01 = PessoaFisica(cpf='123456',
+                                nome='cliente 1',
+                                data_nascimento=datetime.strptime(
+                                    '1994115', '%Y%m%d'),
+                                endereco='Rua flores '
+                                )
+
+
+conta_01 = ContaCorrente(numero=1,
+                         cliente=cliente_01.__str__(),
+                         historico='historico',
+                         limite=300,
+                         limite_saques=3)
+
+conta_02 = ContaCorrente(numero=2,
+                         cliente=cliente_01.__str__(),
+                         historico='historico',
+                         limite=300,
+                         limite_saques=3)
+
+
+cliente_02 = PessoaFisica(cpf='765657',
+                          nome='cliente 2',
+                          data_nascimento=datetime.strptime(
+                              '1904115', '%Y%m%d'),
+                          endereco='Rua mar ')
+
+conta_03 = ContaCorrente(numero=3,
+                         cliente=cliente_02.__str__(),
+                         historico='historico',
+                         limite=300,
+                         limite_saques=3)
+
+
+cliente_01.adicionar_conta(conta_01.__str__())
+cliente_01.adicionar_conta(conta_03.__str__())
+cliente_02.adicionar_conta(conta_02.__str__())
+
+print(cliente_01)
+print(cliente_02)
+
+
+
+clientes = []
+cliente_01 = PessoaFisica(cpf='123456',
+                          nome='cliente 1',
+                          data_nascimento=datetime.strptime(
+                              '1994115', '%Y%m%d'),
+                          endereco='Rua flores ')
+
+conta_01 = ContaCorrente(numero=1,
+                         cliente=cliente_01.__str__(),
+                         historico='historico',
+                         limite=300,
+                         limite_saques=3)
+
+# clientes.append(cliente_01)
+cpf = '123456'
+base_clientes['cpf']
+'''
